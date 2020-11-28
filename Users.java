@@ -8,58 +8,13 @@ import java.util.Scanner;
 
 class Users 
 {
+	Info info = new Info();
 	Scanner input= new Scanner(System.in);
 	File file = new File("C:\\Users\\Mark Rofaeel\\eclipse-workspace\\Fantasy Premier League Project\\users.txt");
-    public String username;
-    public String email; 
-    public String password; 
-    public String favouriteTeam;
-    public Users() throws IOException
-    { 
-    	this.username="";
-        this.email="";
-        this.favouriteTeam="";
-        this.password="";
-    }
-    public void setName(String username) 
-    {
-		this.username = username;
-    }
-    public String getUsername() 
-    {
-		return username;
-	}
-    public void setEmail(String email) 
-    {
-		this.email = email;
-	}
-    public String getEmail() 
-    {
-		return email;
-	}
-    public void setPassword(String password) 
-    {
-		this.password = password;
-	}
-    public String getPassword() 
-    {
-    	return password;
-	}
-    public void setfavouriteTeam(String favouriteTeam) 
-    {
-    	this.favouriteTeam=favouriteTeam;
-    }
-    public String getfavouriteTeam() 
-    {
-        return favouriteTeam;
-    }
-    public void register() throws IOException
+    public void register(Info info) throws IOException
   	{
     	FileWriter fr = new FileWriter(file, true);
        	BufferedWriter myWriter=new BufferedWriter(fr);
-		System.out.println("Registration Page");
-        System.out.printf("Username: ");
-        String username = input.next();
         FileReader out = new FileReader(file);
         BufferedReader br = new BufferedReader(out);
         boolean isExisting = false;
@@ -67,40 +22,30 @@ class Users
         while ((line = br.readLine()) != null) 
         {
             user = line.split(" ")[0];
-            if (user.equals(username)) 
+            if (user.equals(info.getUsername())) 
             {
                 isExisting = true;
                 System.out.println("Error, please enter another username, username already taken! ");
-                username = input.next();
+                String username = input.next();                
                 break;
             }
         }
         if(isExisting)
         {
-	        System.out.printf("Email: ");
-	        String email = input.next();
-	        System.out.printf("Password: ");
-	        String password = input.next();
-	        System.out.printf("Favourite Team: ");
-	        String favouriteTeam = input.next();
-	        myWriter.write(username);
+	        myWriter.write(info.getUsername());
 	        myWriter.write(" ");
-	        myWriter.write(email);
+	        myWriter.write(info.getEmail());
 	        myWriter.write(" ");
-	        myWriter.write(password);
+	        myWriter.write(info.getPassword());
 	        myWriter.write(" ");
-	        myWriter.write(favouriteTeam);
+	        myWriter.write(info.getfavouriteTeam());
 	        myWriter.newLine();
 	        myWriter.close();
 	        fr.close();
   	}
 }
-    public void login() throws IOException
+    public void login(String username, String password) throws IOException
     {
-    	System.out.println("Please enter username: ");
-    	String username = input.next();
-    	System.out.println("Please enter password: ");
-        String password = input.next();
     	FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
         String line, user, pass;
