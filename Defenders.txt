@@ -1,0 +1,15 @@
+AlexanderArnold Liverpool EUR 210 7.5
+Taylor AstonVilla EUR 22 4.5
+Robertson Liverpool EUR 181 7.0 
+Engels AstonVilla EUR 42 4.5
+vanDijk Liverpool EUR 178 6.5
+Hause AstonVilla EUR 34 4.5
+Azpilicueta Chelsea EUR 130 6.0 
+Targett AstonVilla EUR 80 4.5
+Alonso Chelsea EUR 100 6.0 
+Bree AstonVilla EUR 0 4.5
+Digne Everton EUR 120 6.0 
+Konsa AstonVilla EUR 65 4.5
+Pereira Leicester EUR 123 6.0 
+Guilbert AstonVilla EUR 62 4.5
+Walker ManCity EUR 114 6.0 
