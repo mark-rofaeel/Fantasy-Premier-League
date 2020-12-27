@@ -1,12 +1,11 @@
-
 public class PlayerInfo 
 {
 	public String Playername;
-	public String club; 
+	public String club ; 
 	public String nationality;
-	public String position;
-	public int point;
-	public String budget;
+	public String position  ;
+	public int point ;
+	public String budget ;
 	public PlayerInfo() 
 	{
 		this.Playername="";
@@ -16,7 +15,7 @@ public class PlayerInfo
 		this.point=0;
 		this.budget="";
     }
-	public PlayerInfo(String name, String club,String nationality, String position, int point, String bugdet)
+	public PlayerInfo(String name,String club ,String nationality ,String position,int point,String bugdet)
     { 
     	this.Playername=name;
         this.club=club;
@@ -73,4 +72,5 @@ public class PlayerInfo
 	{
 		return point;
 	}
+
 }

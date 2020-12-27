@@ -1,11 +1,10 @@
-
 public class UserInfo 
 {
 		public String username;
 	    public String email; 
 	    public String password; 
 	    public String favouriteTeam;
-	    public String userBudget ;
+	    public String Userbudget ;
 	    public UserInfo()
 	    { 
 	    	this.username="";
@@ -13,7 +12,7 @@ public class UserInfo
 	        this.favouriteTeam="";
 	        this.password="";
 	    }
-	    public UserInfo(String username,String email,String password,String favouriteTeam)
+	    public UserInfo(String username,String email,String password,String favouriteTeam)//100.000
 	    { 
 	    	this.username=username;
 	        this.email=email;
@@ -29,7 +28,7 @@ public class UserInfo
 			return username;
 		}public void setUserbudget(String userbudget)
 		{
-			userBudget = userbudget;
+			Userbudget = userbudget;
 		}
 	    public void setEmail(String email) 
 	    {
@@ -41,7 +40,7 @@ public class UserInfo
 		}
 	    public String getUserbudget() 
 	    {
-			return userBudget;
+			return Userbudget;
 		}
 	    public void setPassword(String password) 
 	    {

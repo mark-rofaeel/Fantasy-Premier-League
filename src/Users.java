@@ -1,44 +1,49 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.Scanner;
-
+//budget = 100.000
+//loginFile
 class Users implements check
-{
+{ 
 	UserInfo info = new UserInfo();
-	Data data = new Data();
 	Scanner input= new Scanner(System.in);
-	File file; 
-	public String check(String username, String x) throws IOException
+	Path path = FileSystems.getDefault().getPath("users.txt");
+	File fileUser = new File(path.toString());
+	public String check(String username,File file) throws IOException
 	{
-		File file = new File(x);
-        FileReader out = new FileReader(file);
+         FileReader out = new FileReader(file);
         BufferedReader br = new BufferedReader(out);
         String line,user;
         boolean isExsiting = true;
         while ((line = br.readLine()) != null) 
         {
-        	user = line.split(" ")[0];
+            user = line.split(" ")[0];
             if (user.equals(username)) 
             {  
             	isExsiting =false;
                 System.out.println("Error, please enter another username, username already taken! ");
                 username = input.next(); 
-                check(username,x);
+                check(username,file);
                 break;
             }
         }
         if(isExsiting)
-        	info.setUserName(username); 
+         info.setUserName(username); 
         br.close();
         return info.username;
-	}	
+	}
+	
 	public void UserFile(UserInfo info) throws IOException
 	{
-		file = new File("C:\\Users\\Mark Rofaeel\\eclipse-workspace\\Fantasy project\\"+info.getUsername()+".txt");
+		Path path = FileSystems.getDefault().getPath(info.getUsername()+".txt");
+		File file = new File(path.toString());
 		file.createNewFile();
 		FileWriter fr = new FileWriter(file, true);
        	BufferedWriter myWriter=new BufferedWriter(fr);
@@ -48,16 +53,14 @@ class Users implements check
 	}
     public void register(UserInfo info) throws IOException
     {
-    	String x = "C:\\Users\\Mark Rofaeel\\eclipse-workspace\\Fantasy project\\users.txt";
-    	String z = check(info.getUsername(),x);
-    	data.file(x ,info,z);
+    	String z = check(info.getUsername(),fileUser);
+    	Data data = new Data();
+    	data.file(fileUser ,info,z);
     	UserFile(info);
     }
     public boolean login(String username, String password) throws IOException
     {
-    	file = new File("C:\\Users\\Mark Rofaeel\\eclipse-workspace\\Fantasy project\\users.txt");
-    	File myfile = new File("C:\\Users\\Mark Rofaeel\\eclipse-workspace\\Fantasy project\\"+username+".txt");
-    	FileReader fr = new FileReader(file);
+    	FileReader fr = new FileReader(fileUser);
         BufferedReader br = new BufferedReader(fr);
         String line, user, pass;
         boolean isLoginSuccess = false;
@@ -73,7 +76,8 @@ class Users implements check
             }
         }
         if (!isLoginSuccess)
-        	System.out.println("Login failed");
+        System.out.println("Login failed");
+        br.close();
 		return isLoginSuccess;
     }
 }

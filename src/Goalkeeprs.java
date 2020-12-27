@@ -6,23 +6,23 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.Scanner;
 
-public class Midfielder extends Squad
+public class Goalkeeprs extends Squad 
 {
-	 public void UserMidfielders(String username) throws Exception
+	 public void UserGoalKeeprs(String username) throws Exception
 	  {     
 			Scanner input= new Scanner(System.in);
 	       	String player ;
-	       	Path path = FileSystems.getDefault().getPath("Midfielders.txt");
-			File Midfielders = new File(path.toString());
-	       	while(Squad.midfielders.size()<5)
+	       	Path path = FileSystems.getDefault().getPath("GoalKeeprs.txt");
+			File GoalKeeprs = new File(path.toString());
+	       	while(Squad.goalkeepers.size()<2)
 	       {
 	       		player = input.next();
-	       		String newname = check(player,Midfielders);
-	       		checkPlayers(newname,Midfielders,username);
+	       		String newname = check(player,GoalKeeprs);
+	       		checkPlayers(newname,GoalKeeprs,username);
 	       		if(Squad.PlayerNum<3)
 	       		{
-	       			checkUserBudget(newname,Midfielders,username);
-		       		Squad.midfielders.add(newname);
+	       			checkUserBudget(newname,GoalKeeprs,username);
+		       		Squad.goalkeepers.add(newname);
 		       		Squad.squad.add(newname);
 	       		}
 	       		else 
@@ -37,8 +37,8 @@ public class Midfielder extends Squad
 	public void add(String username) throws Exception
 	{
 		Data myfile =new Data() ;
-		System.out.println("Add Midfielders:");
-		myfile.ReadToMidfielders();
-        UserMidfielders(username);
+		System.out.println("Add GoalKeeprs:");
+		myfile.ReadToGoalKeeprs();
+        UserGoalKeeprs(username);
 	}
 }
