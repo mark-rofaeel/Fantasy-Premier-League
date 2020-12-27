@@ -1,5 +1,5 @@
 Alisson Liverpool Eur 122 6.0 
-Rodák Fulham Eur 0 4.5
+Rodak Fulham Eur 0 4.5
 Ederson ManCity Eur 133 6.0 
 Casilla Leeds Eur 0 4.5
 Pope Burnley Eur 170 5.5 
@@ -7,12 +7,12 @@ Meslier Leeds Eur 0 4.5
 Schmeichel Leicester USA 156 5.5 
 Ward Leicester USA 0 4.5
 deGea ManUtd USA 143 5.5 
-Adrián Liverpool Eur 27 4.5
+Adrian Liverpool Eur 27 4.5
 Henderson ManUtd Eur 160 5.5 
 Bravo ManCity Eur 11 4.5
 Lloris Spurs Eur 98 5.5 
 Moore SheffieldUtd Eur 3 4.5
-Patrício Wolves Eur 153 5.5 
+Patricio Wolves Eur 153 5.5 
 Johnstone WestBrom USA 0 4.5
 Pickford Everton USA 117 5.0 
 Randolph WestHam USA 3 4.5 
@@ -20,3 +20,4 @@ Roberto WestHam EUR 18 4.5
 Steer AstonVilla EUR 1 4.0
 Heaton AstonVilla USA 59 4.5 
 Nyland AstonVilla ITALY 15 4.0
+ahmedmohy zmalek egypt 18 6.0
