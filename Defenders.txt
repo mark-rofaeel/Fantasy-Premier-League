@@ -1,15 +1,24 @@
-AlexanderArnold Liverpool EUR 210 7.5
-Taylor AstonVilla EUR 22 4.5
-Robertson Liverpool EUR 181 7.0 
-Engels AstonVilla EUR 42 4.5
-vanDijk Liverpool EUR 178 6.5
-Hause AstonVilla EUR 34 4.5
-Azpilicueta Chelsea EUR 130 6.0 
-Targett AstonVilla EUR 80 4.5
-Alonso Chelsea EUR 100 6.0 
-Bree AstonVilla EUR 0 4.5
-Digne Everton EUR 120 6.0 
-Konsa AstonVilla EUR 65 4.5
-Pereira Leicester EUR 123 6.0 
-Guilbert AstonVilla EUR 62 4.5
-Walker ManCity EUR 114 6.0 
+AlexanderArnold Liverpool EUR 243 7.5 defenders
+Taylor AstonVilla EUR 0 4.5 defenders
+Robertson Liverpool EUR 214 7.0 defenders
+Engels AstonVilla EUR 0 4.5 defenders
+vanDijk Liverpool EUR 178 6.5 defenders
+Hause AstonVilla EUR 0 4.5 defenders
+Azpilicueta Chelsea EUR 0 6.0 defenders 
+Nathan ManCity Netherlands -4 3.-4 defenders
+Targett AstonVilla EUR 2 4.5 defenders
+Alonso Chelsea EUR 0 6.0 defenders
+Bree AstonVilla EUR 0 4.5 defenders
+Digne Everton EUR 120 6.0 defenders
+Matip Liverpool usa 0 5.5 defenders
+Gomez Liverpool EUR 0 5.5 defenders
+Konsa AstonVilla EUR 0 4.5 defenders
+Pereira Leicester EUR 123 6.0 defenders
+Guilbert AstonVilla EUR 0 4.5 defenders 
+Walker ManCity EUR 0 4.-0 defenders
+Mendy ManCity eur -4 6.-4 defenders
+Laporte ManCity usa -4 6.-4 defenders 
+Cancelo ManCity usa 1 5.5 defenders
+Zouma Chelsea EUR -7 4.0 defenders
+James Chelsea EUR 0 5.0 defenders
+Chilwell Chelsea EUR 6 5.5 defenders

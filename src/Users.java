@@ -63,6 +63,7 @@ class Users implements check
     	FileReader fr = new FileReader(fileUser);
         BufferedReader br = new BufferedReader(fr);
         String line, user, pass;
+        
         boolean isLoginSuccess = false;
         while ((line = br.readLine()) != null) 
         {
@@ -77,6 +78,7 @@ class Users implements check
         }
         if (!isLoginSuccess)
         System.out.println("Login failed");
+        info.setUserName(username);
         br.close();
 		return isLoginSuccess;
     }

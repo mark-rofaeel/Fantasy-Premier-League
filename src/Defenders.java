@@ -11,31 +11,30 @@ import java.util.Scanner;
 
 public class Defenders extends Squad
 { 
+	Scanner input= new Scanner(System.in);
 	 public void UserDefenders(String username) throws Exception
 	  {     
-			Scanner input= new Scanner(System.in);
 	       	String player ;
 	    	Path path = FileSystems.getDefault().getPath("Defenders.txt");
 			File defender = new File(path.toString());
-	       	while(Squad.defenders.size()<5)
-	       {
-	       		player = input.next();
-	       		String newname = check(player,defender);
-	       		checkPlayers(newname,defender,username);
-	       		if(Squad.PlayerNum<3)
+			int NumbOfDefenders = 5 ;
+			Data data=new Data();
+	         for(int i =0;i<NumbOfDefenders;i++)
+	         {
+	        	 player = input.next();
+	       		String newname = data.check(player,defender);
+	       		playersClub(newname,defender,username);
+	       		if(Squad.PlayerNum<Squad.PlayerInSameSquad)
 	       		{
-	       			checkUserBudget(newname,defender,username);
-		       		Squad.defenders.add(newname);
-		       		Squad.squad.add(newname);
+	       			UserBudget(newname,defender,username);
 	       		}
 	       		else 
 	       		{
 	       			System.out.println("Error you entered the 3 players in the same club");
 	       			
 	       		}
-	       		
-	       	}
-	    
+	         }
+	       	
 	  }	
 	 
 	public void add(String username) throws Exception

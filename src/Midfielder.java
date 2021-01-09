@@ -8,22 +8,23 @@ import java.util.Scanner;
 
 public class Midfielder extends Squad
 {
+	Data myfile =new Data() ;
+	Scanner input= new Scanner(System.in);
 	 public void UserMidfielders(String username) throws Exception
 	  {     
-			Scanner input= new Scanner(System.in);
 	       	String player ;
 	       	Path path = FileSystems.getDefault().getPath("Midfielders.txt");
 			File Midfielders = new File(path.toString());
-	       	while(Squad.midfielders.size()<5)
-	       {
+			int NumOfMidfielders = 5;
+			Data data = new Data();
+			for(int i=0;i<NumOfMidfielders;i++)
+			{
 	       		player = input.next();
-	       		String newname = check(player,Midfielders);
-	       		checkPlayers(newname,Midfielders,username);
-	       		if(Squad.PlayerNum<3)
+	       		String newname = data.check(player,Midfielders);
+	       		playersClub(newname,Midfielders,username);
+	       		if(Squad.PlayerNum<Squad.PlayerInSameSquad)
 	       		{
-	       			checkUserBudget(newname,Midfielders,username);
-		       		Squad.midfielders.add(newname);
-		       		Squad.squad.add(newname);
+	       			UserBudget(newname,Midfielders,username);
 	       		}
 	       		else 
 	       		{
@@ -36,7 +37,7 @@ public class Midfielder extends Squad
 	 
 	public void add(String username) throws Exception
 	{
-		Data myfile =new Data() ;
+	
 		System.out.println("Add Midfielders:");
 		myfile.ReadToMidfielders();
         UserMidfielders(username);

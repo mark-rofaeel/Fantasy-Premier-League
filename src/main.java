@@ -1,37 +1,38 @@
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.Scanner;
 public class main 
 {
-	static Users users = new Users();
-	static Player player = new Player();
-    static Squad defender =new Defenders();
-	static Squad forward = new Forwards();
-	static Squad goalkeepers = new Goalkeeprs();
-	static Squad midfielder = new Midfielder();
-	static UserInfo info = new UserInfo();
 	public static void main(String[] args) throws Exception 
 	{
+		UsersAccount users = new UsersAccount();
 		Scanner input= new Scanner(System.in);
+		Scanner in= new Scanner(System.in);
 		while(true)
 		{
-			System.out.println("To sign up as new user press 1");
-			System.out.println("To login in as existing user press 2");
-			System.out.println("To Add new player press 3");
-			System.out.println("To Add new Squad press 4");
-			System.out.println("To exit press 5");
-			
-			int choice = input.nextInt(); 
+			System.out.println("1)Sign up as new user");
+			System.out.println("2)Login in as existing user");
+			System.out.println("3)Add new player");
+			System.out.println("4)Add new Squad");
+			System.out.println("5)Add Events");
+			System.out.println("6)Check Squad score");
+			System.out.println("7)Exit");
+			System.out.println("-----------------------");
+			int choice = in.nextInt(); 
 			if(choice==1)  
 			{
+				UserInfo info = new UserInfo();
 				System.out.println("Registration Page");
 				System.out.printf("Username: ");
-				String username = input.next();
+				String username = input.nextLine();
 				System.out.printf("Email: ");
-				String email = input.next();
+				String email = input.nextLine();
 				System.out.printf("Password: ");
-				String password = input.next();
+				String password = input.nextLine();
 				System.out.printf("Favourite Team: ");
-				String favouriteTeam = input.next();
+				String favouriteTeam = input.nextLine();
 				info=new UserInfo(username,email,password,favouriteTeam);//100.000
 				users.register(info);
 			}
@@ -39,13 +40,14 @@ public class main
 			{
 				System.out.println("Login Page");
 		    	System.out.println("Please enter username: ");
-	    		String username = input.next();
+	    		String username = input.nextLine();
 	    		System.out.println("Please enter password: ");
-	            String password = input.next();
+	            String password = input.nextLine();
 				users.login(username,password);
 			}
 			else if(choice==3)
 			{
+				Player player = new Player();
 				System.out.println("enter the name of player : ");
 				String playerName = input.next();
 				System.out.println("enter the club of player : ");
@@ -58,7 +60,7 @@ public class main
 		        		"midfielders \n" + 
 		        		"forwards");
 				System.out.println("enter the position of player : ");
-				String position =input.next() ;
+				String position =input.next();
 				System.out.println("enter the point of player : ");
 				int point =input.nextInt();
 				System.out.println("enter the budget of player : ");
@@ -72,20 +74,338 @@ public class main
 		    	System.out.println("Please enter username: ");
 	    		String username = input.next();
 	    		System.out.println("Please enter password: ");
-	            String password = input.next();
+	            String password =input.next();
+	            Data data = new Data();
 				if((users.login(username,password)))
-				{ 
-					midfielder.add(username);
-					goalkeepers.add(username);
-					defender.add(username);
-				    forward.add(username);    
+				{  
+					System.out.println("Defenders.......");
+					data.ReadToDefenders();
+					System.out.println("--------------------");
+					System.out.println("forwards.......");
+					data.ReadToForwards();
+					System.out.println("---------------------");
+					System.out.println("goalkeepers.......");
+		            data.ReadToGoalKeeprs();
+		            System.out.println("--------------------");
+		            System.out.println("Midfielders.......");
+		            data.ReadToMidfielders();
+		            System.out.println("--------------------");
+		            int n = 0;
+		            while(true) {
+					System.out.println("enter player name");
+					String playername = input.next();
+					System.out.println("enter position :");
+					String position = input.next();
+					SquadRules rule2 = new ClubRule();
+					SquadRules rule3 = new TotalPrice();
+					SquadRules rule4 = new SquadPlayerNumber();
+					if(position.equalsIgnoreCase("defender"))
+					{
+						Path path = FileSystems.getDefault().getPath("Defenders.txt");
+						File defenders = new File(path.toString());
+						SquadRules rule1 = new DefendersRule();
+						Boolean defenderRule = rule1.applyRule(playername, defenders, username);
+						Boolean ClubRule = rule2.applyRule(playername, defenders, username);
+						Boolean budgetRule = rule3.applyRule(playername, defenders, username);
+				        Boolean squadnumber = rule4.applyRule(playername, defenders, username);
+						if(defenderRule&&ClubRule&&budgetRule&&squadnumber)
+						{
+							data.replaceBudget(playername, defenders, username);
+							data.userFile(playername, username, defenders);
+						}
+						else
+						{
+							System.out.println("can't add this player");
+							if(squadnumber==false)
+								break;
+						}
+							
+					 }
+					else if(position.equalsIgnoreCase("forward"))
+					{
+						Path path = FileSystems.getDefault().getPath("Forwards.txt");
+						File forward = new File(path.toString());
+						SquadRules rule1 = new ForwardRule();
+						Boolean defenderRule = rule1.applyRule(playername, forward, username);
+						Boolean ClubRule = rule2.applyRule(playername, forward, username);
+						Boolean budgetRule = rule3.applyRule(playername, forward, username);
+						Boolean squadnumber = rule4.applyRule(playername, forward, username);
+					  if(defenderRule&&ClubRule&&budgetRule&&squadnumber)
+						{
+							data.replaceBudget(playername, forward, username);
+							data.userFile(playername, username, forward);
+						}
+						else
+						{
+							System.out.println("can't add this player");
+							if(squadnumber==false)
+								break;
+						}
+					 }
+					else if(position.equalsIgnoreCase("midfielder"))
+					{
+						Path path = FileSystems.getDefault().getPath("Midfielders.txt");
+						File midfielder = new File(path.toString());
+						SquadRules rule1 = new MidfielderRule();
+						boolean midfilederRule = rule1.applyRule(playername, midfielder, username);
+						boolean ClubRule = rule2.applyRule(playername, midfielder, username);
+						boolean budgetRule = rule3.applyRule(playername, midfielder, username);
+						boolean squadnumber = rule4.applyRule(playername, midfielder, username);
+						System.out.println(midfilederRule);
+						System.out.println(ClubRule);
+						System.out.println(budgetRule);
+						System.out.println(squadnumber);
+						if(midfilederRule&&ClubRule&&budgetRule&&squadnumber)
+						{
+							data.replaceBudget(playername, midfielder, username);
+							data.userFile(playername, username, midfielder);
+						}
+						else
+						{
+							System.out.println("can't add this player");
+							if(squadnumber==false)
+								break;
+						}
+					 }
+					else if(position.equalsIgnoreCase("goalkeeper"))
+					{
+						Path path = FileSystems.getDefault().getPath("Goalkeeprs.txt");
+						File goalkeeper = new File(path.toString());
+						SquadRules rule1 = new GoalkeeprsRule();
+						Boolean defenderRule = rule1.applyRule(playername, goalkeeper, username);
+						Boolean ClubRule = rule2.applyRule(playername, goalkeeper, username);
+						Boolean budgetRule = rule3.applyRule(playername, goalkeeper, username);
+						Boolean squadnumber = rule4.applyRule(playername, goalkeeper, username);
+						if(defenderRule&&ClubRule&&budgetRule&&squadnumber)
+						{
+							data.replaceBudget(playername, goalkeeper, username);
+							data.userFile(playername, username, goalkeeper);
+						}
+						else
+						{
+							System.out.println("can't add this player");
+							if(squadnumber==false)
+								break;
+						}					 }
+					
+					
 				    System.out.println("Done :D");
 				}
-				else System.out.println("Failed");
-			  }
+				}
+			 }
+			else if(choice==5)
+			 {  
+				
+				Data data = new Data();
+				   System.out.println("you're the admin");
+				   System.out.println("what's the gameweek want to add the events ? week1 Or week2");
+				    String gameweek = input.next();
+					data.ReadWeek(gameweek);
+					Path week = FileSystems.getDefault().getPath(gameweek+".txt");
+					File weekfile = new File(week.toString());
+					data.Gameweek(gameweek);
+					System.out.println("-----------------------------------------------------------------");
+					System.out.println("what events would you like to add?");
+					System.out.println("1.StartMatch for players"); //1
+					System.out.println("2.goal scored by a goalkeeper or defender");
+					System.out.println("3.goal scored by a midfielder"); //5
+					System.out.println("4.goal scored by a forward"); //4
+					System.out.println("5.For each yellow card");//-1
+					System.out.println("6.For each red card");//-3
+					System.out.println("7.For each goal assist");//3
+				    System.out.println("8.For each own goal"); //-2
+				    System.out.println("-----------------------------------------------------------------");
+					int choicee = input.nextInt();
+					System.out.println("what's the name of the player?");
+					String PlayerName = input.next();
+					Events assist = new GoalAssistEvent();
+					Events startmatch = new StartMatchEvent();
+					Events goal1 = new GoalByGoalkeeperAndDefender();
+					Events goal2 =new GoalByMid();
+					Events goal3 = new GoalByForward();
+					Events yellowCard = new YellowCardEvent();
+					Events redCard = new RedCardEvent();
+					Events owngoal = new OwnGoalEvent();
+				    if(data.checkPlayerName(PlayerName, weekfile))
+				    {
+				    	System.out.println("what's your player position?");
+						String position = input.next();
+						if(choicee==1)
+						{  
+							  startmatch.ApplyEvents(PlayerName, position, gameweek);
+						}
+						else if(choicee==2)
+						{  
+							System.out.println("what's the assist playerName?");
+							String assistName = input.next();
+							System.out.println("what's your player position?");
+							String positionasst = input.next();
+							assist.ApplyEvents(assistName, positionasst, gameweek);
+							System.out.println("what's the club Name");
+							String club = input.next();
+							goal1.ApplyEvents(PlayerName, position, gameweek); 
+							Events event = new GoalEvent();
+							if(club.equalsIgnoreCase("LiverPool"))
+							{
+								for(int i=0 ; i<data.team2.size();i++)
+								{
+									event.ApplyEvents(data.team2.get(i),"Defender", gameweek);
+								}
+								for(int i=0 ; i<data.team2.size();i++)
+								{
+									event.ApplyEvents(data.team2.get(i),"Goalkeeper", gameweek);
+								}
+								
+							}
+							else if(club.equalsIgnoreCase("ManCity"))
+							{   
+								for(int i=0 ; i<data.team1.size();i++)
+								{
+									event.ApplyEvents(data.team1.get(i),"Defender", gameweek);
+								}
+								for(int i=0 ; i<data.team1.size();i++)
+								{
+									event.ApplyEvents(data.team1.get(i), "Goalkeeper", gameweek);
+								}
+							}
+							else if(club.equalsIgnoreCase("AstonVilla"))
+							{
+								for(int i=0 ; i<data.team2.size();i++)
+								{
+									event.ApplyEvents(data.team2.get(i), "defender", gameweek);
+									event.ApplyEvents(data.team2.get(i), "goalkeeper", gameweek);
+								}
+							}
+							else if(club.equalsIgnoreCase("Chelsea"))
+							{
+								for(int i=0 ; i<data.team1.size();i++)
+								{
+									event.ApplyEvents(data.team1.get(i), "defender", gameweek);
+									event.ApplyEvents(data.team1.get(i), "goalkeeper", gameweek);
+								}
+							}
+						}
+						else if(choicee==3) //goal by midfielder
+						{
+							System.out.println("what's the assist playerName?");
+							String assistName = input.next();
+							System.out.println("what's your player position?");
+							String positionasst = input.next();
+							assist.ApplyEvents(PlayerName, positionasst, gameweek);
+							System.out.println("what's the club Name");
+							String club = input.next();
+							goal2.ApplyEvents(PlayerName, position, gameweek); 
+							Events event = new GoalEvent();
+							if(gameweek.equalsIgnoreCase("week1")&&club.equalsIgnoreCase("LivelPool"))
+							{
+								for(int i=0 ; i<data.team2.size();i++)
+								{
+									event.ApplyEvents(data.team2.get(i), position, gameweek);
+								}
+							}
+							else if(gameweek.equalsIgnoreCase("week1")&&club.equalsIgnoreCase("ManCity"))
+							{
+								for(int i=0 ; i<data.team1.size();i++)
+								{
+									event.ApplyEvents(data.team1.get(i), position, gameweek);
+								}
+							}
+							else if(gameweek.equalsIgnoreCase("week2")&&club.equalsIgnoreCase("AstonVilla"))
+							{
+								for(int i=0 ; i<data.team2.size();i++)
+								{
+									event.ApplyEvents(data.team2.get(i), position, gameweek);
+								}
+							}
+							else if(gameweek.equalsIgnoreCase("week2")&&club.equalsIgnoreCase("Chelsea"))
+							{
+								for(int i=0 ; i<data.team1.size();i++)
+								{
+									event.ApplyEvents(data.team1.get(i), position, gameweek);
+								}
+							}
+						}
+						else if(choicee==4) //goal scored by a forward
+						{
+							System.out.println("what's the assist playerName?");
+							String assistName = input.next();
+							System.out.println("what's your player position?");
+							String positionasst = input.next();
+							assist.ApplyEvents(PlayerName, positionasst, gameweek);
+							System.out.println("what's the club Name");
+							String club = input.next();
+							goal3.ApplyEvents(PlayerName, position, gameweek); 
+							Events event = new GoalEvent();
+							if(gameweek.equalsIgnoreCase("week1")&&club.equalsIgnoreCase("LivelPool"))
+							{
+								for(int i=0 ; i<data.team2.size();i++)
+								{
+									event.ApplyEvents(data.team2.get(i), position, gameweek);
+								}
+							}
+							else if(gameweek.equalsIgnoreCase("week1")&&club.equalsIgnoreCase("ManCity"))
+							{
+								for(int i=0 ; i<data.team1.size();i++)
+								{
+									event.ApplyEvents(data.team1.get(i), position, gameweek);
+								}
+							}
+							else if(gameweek.equalsIgnoreCase("week2")&&club.equalsIgnoreCase("AstonVilla"))
+							{
+								for(int i=0 ; i<data.team2.size();i++)
+								{
+									event.ApplyEvents(data.team2.get(i), position, gameweek);
+								}
+							}
+							else if(gameweek.equalsIgnoreCase("week2")&&club.equalsIgnoreCase("Chelsea"))
+							{
+								for(int i=0 ; i<data.team1.size();i++)
+								{
+									event.ApplyEvents(data.team1.get(i), position, gameweek);
+								}
+							}
+						}
+						else if(choicee==5) //goal scored by a forward
+						{
+							yellowCard.ApplyEvents(PlayerName, position, gameweek);	
+						}
+						else if(choicee==6) //For each penalty save //5
+						{
+							redCard.ApplyEvents(PlayerName, position, gameweek);
+						}
+						else if(choicee==7)//For each penalty miss //-2
+						{
+							assist.ApplyEvents(PlayerName, position, gameweek);
+						}
+						else if(choicee==8) //8.For every 3 shot saves by a goalkeeper1
+						{
+							owngoal.ApplyEvents(PlayerName, position, gameweek);
+						} 
+						
+					  System.out.println("SUCCESSFULY....");
+				 }
+			 }
+			if(choice==6)
+			 {  
+				Data data = new Data();
+				SquadCalculation squad= new SquadCalculation();
+				System.out.println("Login Page");
+		    	System.out.println("Please enter username: ");
+	    		String username = input.next();
+	    		System.out.println("Please enter password: ");
+	            String password =input.next();
+				if((users.login(username,password)))
+				{
+				 System.out.println("what's the game week 1 or 2 ?...");  
+				 int gameweek = input.nextInt();
+				 data.Dataweek(username,gameweek);
+				 System.out.println("-------------------------");
+				 System.out.println("the score of gameweek: ");
+			    }
+			 }
 			else
 				break;
-		}
+			
+		}}
 	}
 
-}

@@ -8,22 +8,22 @@ import java.util.Scanner;
 
 public class Goalkeeprs extends Squad 
 {
+	Scanner input= new Scanner(System.in);
 	 public void UserGoalKeeprs(String username) throws Exception
 	  {     
-			Scanner input= new Scanner(System.in);
 	       	String player ;
 	       	Path path = FileSystems.getDefault().getPath("GoalKeeprs.txt");
 			File GoalKeeprs = new File(path.toString());
-	       	while(Squad.goalkeepers.size()<2)
-	       {
-	       		player = input.next();
-	       		String newname = check(player,GoalKeeprs);
-	       		checkPlayers(newname,GoalKeeprs,username);
-	       		if(Squad.PlayerNum<3)
+			int NumOfGoalkeepers = 2;
+			Data data=new Data();
+			for(int i=0;i<NumOfGoalkeepers;i++)
+			{
+				player = input.next();
+	       		String newname = data.check(player,GoalKeeprs);
+	       		playersClub(newname,GoalKeeprs,username);
+	       		if(Squad.PlayerNum<Squad.PlayerInSameSquad)
 	       		{
-	       			checkUserBudget(newname,GoalKeeprs,username);
-		       		Squad.goalkeepers.add(newname);
-		       		Squad.squad.add(newname);
+	       			UserBudget(newname,GoalKeeprs,username);
 	       		}
 	       		else 
 	       		{

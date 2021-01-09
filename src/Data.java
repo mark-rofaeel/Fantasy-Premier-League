@@ -9,17 +9,22 @@ import java.io.PrintWriter;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Data 
+public class Data
 {
 	File file ;
 	Path goalkeepers = FileSystems.getDefault().getPath("GoalKeeprs.txt");
 	Path defenders = FileSystems.getDefault().getPath("Defenders.txt");
 	Path midfielder = FileSystems.getDefault().getPath("Midfielders.txt");
 	Path forward = FileSystems.getDefault().getPath("Forwards.txt");
-	public void fileWriter(File file,PlayerInfo info) throws IOException
+	Path week1 = FileSystems.getDefault().getPath("week1.txt");
+	Path week2 = FileSystems.getDefault().getPath("week2.txt");
+	ArrayList<String> team1 = new ArrayList<String>();
+	ArrayList<String> team2 = new ArrayList<String>();
+	public void fileWriter(File Playerfile,PlayerInfo info) throws IOException
 	{  
-		FileWriter fr = new FileWriter(file, true);
+		FileWriter fr = new FileWriter(Playerfile, true);
        	BufferedWriter myWriter=new BufferedWriter(fr);
        	myWriter.newLine();
        	myWriter.write(info.getPlayername() + " ");
@@ -30,9 +35,9 @@ public class Data
        	myWriter.close();
         fr.close();
 	}
-	public void file(File file, UserInfo info,String name) throws IOException 
+	public void file(File userFile, UserInfo info,String name) throws IOException 
 	{ 
-			FileWriter fr = new FileWriter(file, true);
+			FileWriter fr = new FileWriter(userFile, true);
 	       	BufferedWriter myWriter=new BufferedWriter(fr);
 	        myWriter.write(name);
 	        myWriter.write(" ");
@@ -45,32 +50,39 @@ public class Data
 	        myWriter.close();
 	        fr.close();
      }
-	public void userFile(String playername , String username,File filename) throws IOException, Exception
+	public Boolean checkPlayerName(String name,File file) throws IOException
+	{
+		Scanner input= new Scanner(System.in);
+		FileReader out = new FileReader(file);
+	    BufferedReader br = new BufferedReader(out);
+        boolean isLoginSuccess = false;
+        String line , player;
+        while ((line = br.readLine()) != null)
+       {
+            	   player = line.split(" ")[0];
+            	   if (player.equals(name)) 
+                   { 
+                       isLoginSuccess = true;
+                       break ;
+                   }
+       }
+        if(!isLoginSuccess)
+        {
+      	   System.out.println("the name of player not exists , enter again");
+      	   return false;
+        }
+        return true ;
+	}
+	
+	public void userFile(String playername , String username,File PlayerFile) throws IOException, Exception
 	{
 		Path path = FileSystems.getDefault().getPath(username+".txt");
 		File userfile = new File(path.toString());
-		FileReader out = new FileReader(filename);
+		FileReader out = new FileReader(PlayerFile);
 	    BufferedReader br = new BufferedReader(out);
 	    FileWriter fr = new FileWriter(userfile, true);
        	BufferedWriter pw=new BufferedWriter(fr);
         String line , player;
-		if(filename.getName().equals("Defenders.txt"))
-        {
-        	pw.write("Defenders: ");
-        }
-        else if(filename.getName().equals("Forwards.txt"))
-        {
-        	pw.write("Forwards: ");
-        }
-        else if(filename.getName().equals("GoalKeeprs.txt"))
-        {
-        	pw.write("GoalKeeprs: ");
-        }
-        else if(filename.getName().equals("Midfielders.txt"))
-        {
-        	pw.write("Midfielders: ");
-        }
-        
         while ((line = br.readLine()) != null)
         {
             	   player = line.split(" ")[0];
@@ -80,14 +92,15 @@ public class Data
                        break ;
                    }
         }
+
         pw.close();
         br.close();
 		
 	}
 	 
-	public void fileReader(File file) throws IOException
+	public void fileReader(File Playerfile) throws IOException
 	{      
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(new FileReader(Playerfile));
             String line;
             while ((line = br.readLine()) != null) 
             {
@@ -95,12 +108,141 @@ public class Data
 	        }
             br.close();
     }
-	public void  replace(String oldBudget , String fileName,String newLine) throws IOException
+	public void replacePoint(String PlayerName , int point , String filename) throws IOException
+    {
+		ArrayList<String> lines = new ArrayList<String>();
+		Path path = FileSystems.getDefault().getPath(filename);
+		File week1file = new File(path.toString());
+	    FileReader fr = new FileReader(week1file);
+	    BufferedReader br = new BufferedReader(fr);
+	    String line , PlayerPoint;
+	    lines.clear();
+	    while((line = br.readLine())!= null)
+	    { 
+	    	
+	    	if(line.contains(PlayerName))
+	    	{ 
+	    		PlayerPoint = line.split(" ")[3];
+	    		int oldPoint = Integer.parseInt(PlayerPoint); 
+	    		int newPoint = oldPoint + point;
+	    		String totalPoint = String.valueOf(newPoint);
+	    		line = line.replace(PlayerPoint, totalPoint);
+	    		lines.add(line);
+	    		continue ;
+	    	}
+	        lines.add(line);
+	    }
+	    PrintWriter writer = new PrintWriter(week1file);
+	    for (String str : lines) 
+	    {
+	        writer.println(str);
+	    }
+	    writer.close();
+	    br.close();
+	    fr.close();
+	   
+    }
+	public void Gameweek(String gamefile) throws IOException
+	{
+		Path path = FileSystems.getDefault().getPath(gamefile+".txt");
+		File gamefilee = new File(path.toString());
+		team1.clear();
+		team2.clear();
+	   BufferedReader br = new BufferedReader(new FileReader(gamefilee));
+	            String line , position , club , playername;
+	          if(gamefile.equalsIgnoreCase("week1"))
+	          {
+	            while ((line = br.readLine()) != null) 
+	            {  
+	            	position = line.split(" ")[5];
+	            	club = line.split(" ")[1];
+	            	playername = line.split(" ")[0];
+	               if((position.equalsIgnoreCase("defender")||position.equalsIgnoreCase("goalkeeper"))&&club.equalsIgnoreCase("Liverpool"))  
+	               {
+	            	   team1.add(playername);
+	            	  
+	               }
+	               else if((position.equalsIgnoreCase("defender")||position.equalsIgnoreCase("goalkeeper"))&&club.equalsIgnoreCase("ManCity"))
+	               {
+	            	   team2.add(playername);
+	            	   
+	               }
+		        }
+	          }
+	          else if(gamefile.equalsIgnoreCase("week2"))
+	          {
+	            while ((line = br.readLine()) != null) 
+	            {  
+	            	position = line.split(" ")[5];
+	            	club = line.split(" ")[1];
+	            	playername = line.split(" ")[0];
+	               if(position.equalsIgnoreCase("defender")||position.equalsIgnoreCase("goalkeeper")&&club.equalsIgnoreCase("AstonVilla"))  
+	               {
+	            	   team1.add(playername);
+	               }
+	               else if(position.equalsIgnoreCase("defender")||position.equalsIgnoreCase("goalkeeper")&&club.equalsIgnoreCase("Chelsea "))
+	               {
+	            	   team2.add(playername);
+	               }
+		        }
+	          }
+	          
+	          br.close();
+	}
+	public void Update(String PlayerName , int point,String position,String gameweek) throws IOException
+	{ 
+		String fileweek = gameweek+".txt";
+		replacePoint(PlayerName,point,fileweek);
+		updateUserFile(PlayerName,point);
+		positionFiles(PlayerName,point,position);
+	}
+	public void updateUserFile(String PlayerName,int point) throws IOException
+	{
+		Path path = FileSystems.getDefault().getPath("users.txt");
+		File userfile = new File(path.toString());
+		FileReader fr = new FileReader(userfile);
+	    BufferedReader br = new BufferedReader(fr);
+	    String line ,username;
+		while((line = br.readLine())!= null)
+	    { 
+			username = line.split(" ")[0];
+			replacePoint(PlayerName,point,username+".txt");
+	    }
+		br.close();
+		fr.close();
+		
+	}
+	public void positionFiles(String PlayerName, int point,String position) throws IOException
+	{ 
+		if(position.equalsIgnoreCase("Defender"))
+		{
+			replacePoint(PlayerName,point,"Defenders.txt");
+		}
+		else if(position.equalsIgnoreCase("Goalkeeper"))
+		{
+			replacePoint(PlayerName,point,"Goalkeeprs.txt");
+		}
+		else if(position.equalsIgnoreCase("Forward"))
+		{
+			replacePoint(PlayerName,point,"Forwards.txt");
+		}
+		else if(position.equalsIgnoreCase("Midfielder"))
+		{
+			replacePoint(PlayerName,point,"Midfielders.txt");
+		}
+	}
+	public void ReadWeek(String gameweek) throws IOException
+	{
+		Path path = FileSystems.getDefault().getPath(gameweek+".txt");
+		File week1file = new File(path.toString());
+		fileReader(week1file);
+	}
+	public void replace(String oldBudget , String fileName,String newLine) throws IOException
     {
 		ArrayList<String> lines = new ArrayList<String>();
 		Path path = FileSystems.getDefault().getPath(fileName+".txt");
-		file = new File(path.toString());
-	    FileReader fr = new FileReader(file);
+		File Playerfile = new File(path.toString());
+	    FileReader fr = new FileReader(Playerfile);
 	    BufferedReader br = new BufferedReader(fr);
 	    String line;
 	    lines.clear();
@@ -112,10 +254,10 @@ public class Data
 	    	}
 	        lines.add(line);
 	    }
-	    PrintWriter writer = new PrintWriter(file);
-	    writer.print(lines.get(0));
+	    PrintWriter writer = new PrintWriter(Playerfile);
+	    writer.print(lines.get(0)); 
 	    writer.close();
-		BufferedWriter out=new BufferedWriter(new FileWriter(file,true));
+		BufferedWriter out=new BufferedWriter(new FileWriter(Playerfile,true));
 		out.newLine();
 		for(int i=1;i<lines.size();i++)
 		{
@@ -126,7 +268,94 @@ public class Data
 		br.close();
 		out.close();
     }
-	
+	public void replaceBudget(String name,File filee ,String username) throws IOException  
+	{
+		Path path = FileSystems.getDefault().getPath(username+".txt");
+		Data data = new Data();
+		File fileUser = new File(path.toString());
+		FileReader out = new FileReader(filee);
+	    BufferedReader br = new BufferedReader(out);
+        String line , player,budget;
+        while ((line = br.readLine()) != null)
+	     {
+        	 player = line.split(" ")[0];
+      	    if (player.equals(name)) 
+             { 
+                 break ;
+             }
+	      }  
+           budget=line.split(" ")[4];
+	       FileReader read = new FileReader(fileUser);
+		   BufferedReader buffer = new BufferedReader(read);
+		  String userline = buffer.readLine();
+		  String user = userline.split(" ")[0]; 
+		  String newBudget = null;
+		  System.out.println(budget + user);
+		  SquadCalculation squad = new SquadCalculation();
+		  newBudget=squad.CalcUserBudget(user,budget);
+		  System.out.println(newBudget);
+		  if(newBudget=="error the budget not enough \n")
+		  { 
+		  } else
+			try {
+				replace(user,username,newBudget);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		  
+		 
+		  buffer.close();
+		  br.close();
+		  out.close();
+	}
+	public void UserFile(UserInfo info) throws IOException
+	{
+		Path path = FileSystems.getDefault().getPath(info.getUsername()+".txt");
+		File file = new File(path.toString());
+		file.createNewFile();
+		FileWriter fr = new FileWriter(file, true);
+       	BufferedWriter myWriter=new BufferedWriter(fr);
+       	myWriter.write("100.0");
+       	myWriter.newLine();
+       	myWriter.close();
+	}
+	public void Dataweek(String username,int gameweek) throws IOException
+	  { 
+		  ArrayList<Integer> points = new ArrayList<Integer>();
+		  ArrayList<String> userarr = new ArrayList<String>();
+		  Path week = FileSystems.getDefault().getPath("week"+gameweek+".txt");
+		  File weekfile = new File(week.toString());
+		  FileReader fr2 = new FileReader(weekfile);
+		  BufferedReader brweek = new BufferedReader(fr2);
+		  Path user = FileSystems.getDefault().getPath(username+".txt");
+		  File userfile = new File(user.toString());
+		  FileReader fr = new FileReader(userfile);
+		  BufferedReader bruser = new BufferedReader(fr);  
+		  String lineweek ,lineuser ,point ,playername ;
+		  points.clear();
+		  int arrpoint;
+		  SquadCalculation squadscore =new SquadCalculation();    
+		 while((lineuser =  bruser.readLine())!=null)
+			{ 
+					  userarr.add(lineuser);
+			}
+					   
+			  while((lineweek = brweek.readLine())!= null)
+			  {
+				  point = lineweek.split(" ")[3];
+				  arrpoint =Integer.parseInt(point);
+				  playername = lineweek.split(" ")[0];
+				     for(int i=0;i<userarr.size();i++)
+				     { 
+						  if(userarr.get(i).contains(playername))
+						  { 
+							  points.add(arrpoint);
+						  }
+				    } 
+			  }
+			  squadscore.CalcuScoring(points);
+		}
 	public void ReadToGoalKeeprs() throws IOException 
 	{
 		
@@ -145,7 +374,6 @@ public class Data
 	}
 	public void ReadToForwards() throws IOException
 	{
-		
 		file = new File(forward.toString());
 		fileReader(file);
 	}

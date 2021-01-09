@@ -8,22 +8,21 @@ import java.util.Scanner;
 
 public class Forwards extends Squad
 {
+	   Scanner input= new Scanner(System.in);
 	 public void UserForwards(String username) throws Exception
 	  {     
-		 	Scanner input= new Scanner(System.in);
 	       	String player ;
 	       	Path path = FileSystems.getDefault().getPath("Forwards.txt");
 			File forward = new File(path.toString());
-	       	while(Squad.forwards.size()<3)
-	       {
-	       		player = input.next();
-	       		String newname = check(player,forward);
-	       		checkPlayers(newname,forward,username);
-	       		if(Squad.PlayerNum<3)
+			int NumOfForward = 3;
+			Data data=new Data();
+	       	for(int i=0;i<NumOfForward;i++)
+	       	{	player = input.next();
+	       		String newname = data.check(player,forward);
+	       		playersClub(newname,forward,username);
+	       		if(Squad.PlayerNum<Squad.PlayerInSameSquad)
 	       		{
-	       			checkUserBudget(newname,forward,username);
-		       		Squad.forwards.add(newname);
-		       		Squad.squad.add(newname);
+	       			UserBudget(newname,forward,username);
 	       		}
 	       		else 
 	       		{
