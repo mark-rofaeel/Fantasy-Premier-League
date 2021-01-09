@@ -2,7 +2,7 @@ Aubameyang Arsenal EUR 0 12.0 midfielder
 Shelvey Newcastle EUR 0 5.5 midfielder
 Mane Liverpool EUR 3 12.3 midfielder
 Atsu Newcastle EUR 37 5.5 midfielder
-Salah Liverpool EUR 6 16.6 midfielder
+Salah Liverpool EUR 18 10.0 midfielder
 SaintMaximin Newcastle EUR 92 5.5 midfielder
 DeBruyne ManCity EUR 6 11.5 midfielder
 Lundstram SheffieldUtd EUR 144 5.5 midfielder

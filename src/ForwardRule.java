@@ -42,7 +42,10 @@ public class ForwardRule extends SquadRules
 		    }
 		    for(int i=1;i<forward.size();i++)
 		    {
-					counterForward++;
+		    	if(forward.get(i).contains("forward"))
+		    	{
+		    	counterForward++;
+		    	}
 		    }
 		    
 }}

@@ -45,6 +45,7 @@ public class UsersAccount
 	        System.out.println("Login failed");
 	        info.setUserName(username);
 	        br.close();
+	        fr.close();
 			return isLoginSuccess;
 	    }
 	    public Boolean RegistrationRule(String username,File file) throws IOException
@@ -65,6 +66,7 @@ public class UsersAccount
 	        if(isExsiting)
 	         info.setUserName(username); 
 	        br.close();
+	        out.close();
 	        return isExsiting;
 		}
 }

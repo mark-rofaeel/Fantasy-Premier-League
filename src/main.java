@@ -90,8 +90,8 @@ public class main
 		            System.out.println("Midfielders.......");
 		            data.ReadToMidfielders();
 		            System.out.println("--------------------");
-		            int n = 0;
-		            while(true) {
+		            while(true) 
+		            {
 					System.out.println("enter player name");
 					String playername = input.next();
 					System.out.println("enter position :");
@@ -186,10 +186,11 @@ public class main
 							System.out.println("can't add this player");
 							if(squadnumber==false)
 								break;
-						}					 }
+						}					 
+					}
 					
 					
-				    System.out.println("Done :D");
+				    System.out.println("Done :) ");
 				}
 				}
 			 }
@@ -204,6 +205,7 @@ public class main
 					Path week = FileSystems.getDefault().getPath(gameweek+".txt");
 					File weekfile = new File(week.toString());
 					data.Gameweek(gameweek);
+					String fileweek = gameweek+".txt";
 					System.out.println("-----------------------------------------------------------------");
 					System.out.println("what events would you like to add?");
 					System.out.println("1.StartMatch for players"); //1
@@ -218,6 +220,24 @@ public class main
 					int choicee = input.nextInt();
 					System.out.println("what's the name of the player?");
 					String PlayerName = input.next();
+					System.out.println("what's your player position?");
+					String position = input.next();
+					if(position.equalsIgnoreCase("Defender"))
+					{
+						position = "Defenders.txt";
+					}
+					else if(position.equalsIgnoreCase("Goalkeeper"))
+					{
+						position = "Goalkeeprs.txt";
+					}
+					else if(position.equalsIgnoreCase("Forward"))
+					{
+						position= "Forwards.txt";
+					}
+					else if(position.equalsIgnoreCase("Midfielder"))
+					{
+						position = "Midfielders.txt";
+					}
 					Events assist = new GoalAssistEvent();
 					Events startmatch = new StartMatchEvent();
 					Events goal1 = new GoalByGoalkeeperAndDefender();
@@ -226,34 +246,42 @@ public class main
 					Events yellowCard = new YellowCardEvent();
 					Events redCard = new RedCardEvent();
 					Events owngoal = new OwnGoalEvent();
+					Events event = new GoalEvent();
+					Observer eventserver = new UserUpdates(event);
+					Observer eventobserver1 = new FilesUpdate(event);
+					Observer assistobserver = new UserUpdates(assist);
+					Observer assistobserver1 = new FilesUpdate(assist); 
+					Observer observer; 
 				    if(data.checkPlayerName(PlayerName, weekfile))
 				    {
-				    	System.out.println("what's your player position?");
-						String position = input.next();
 						if(choicee==1)
 						{  
-							  startmatch.ApplyEvents(PlayerName, position, gameweek);
+							observer = new UserUpdates(startmatch);
+							observer = new FilesUpdate(startmatch);
+							startmatch.ApplyEvents(PlayerName, position, fileweek);
 						}
 						else if(choicee==2)
 						{  
+							observer = new UserUpdates(goal1);
+							observer = new FilesUpdate(goal1);
+							goal1.ApplyEvents(PlayerName, position, fileweek); 
 							System.out.println("what's the assist playerName?");
 							String assistName = input.next();
 							System.out.println("what's your player position?");
 							String positionasst = input.next();
-							assist.ApplyEvents(assistName, positionasst, gameweek);
+							assist.ApplyEvents(assistName, positionasst, fileweek);
 							System.out.println("what's the club Name");
 							String club = input.next();
-							goal1.ApplyEvents(PlayerName, position, gameweek); 
-							Events event = new GoalEvent();
 							if(club.equalsIgnoreCase("LiverPool"))
 							{
 								for(int i=0 ; i<data.team2.size();i++)
 								{
-									event.ApplyEvents(data.team2.get(i),"Defender", gameweek);
+									event.ApplyEvents(data.team2.get(i),"Defender", fileweek);
+									
 								}
 								for(int i=0 ; i<data.team2.size();i++)
 								{
-									event.ApplyEvents(data.team2.get(i),"Goalkeeper", gameweek);
+									event.ApplyEvents(data.team2.get(i),"Goalkeeper", fileweek);
 								}
 								
 							}
@@ -261,131 +289,161 @@ public class main
 							{   
 								for(int i=0 ; i<data.team1.size();i++)
 								{
-									event.ApplyEvents(data.team1.get(i),"Defender", gameweek);
+									event.ApplyEvents(data.team1.get(i),"Defender", fileweek);
 								}
 								for(int i=0 ; i<data.team1.size();i++)
 								{
-									event.ApplyEvents(data.team1.get(i), "Goalkeeper", gameweek);
+									event.ApplyEvents(data.team1.get(i), "Goalkeeper", fileweek);
 								}
 							}
 							else if(club.equalsIgnoreCase("AstonVilla"))
 							{
 								for(int i=0 ; i<data.team2.size();i++)
 								{
-									event.ApplyEvents(data.team2.get(i), "defender", gameweek);
-									event.ApplyEvents(data.team2.get(i), "goalkeeper", gameweek);
+									event.ApplyEvents(data.team2.get(i),"Defender", fileweek);
+								}
+								for(int i=0 ; i<data.team2.size();i++)
+								{
+									event.ApplyEvents(data.team2.get(i), "Goalkeeper", fileweek);
 								}
 							}
 							else if(club.equalsIgnoreCase("Chelsea"))
 							{
 								for(int i=0 ; i<data.team1.size();i++)
 								{
-									event.ApplyEvents(data.team1.get(i), "defender", gameweek);
-									event.ApplyEvents(data.team1.get(i), "goalkeeper", gameweek);
+									event.ApplyEvents(data.team1.get(i),"Defender", fileweek);
+								}
+								for(int i=0 ; i<data.team1.size();i++)
+								{
+									event.ApplyEvents(data.team1.get(i), "Goalkeeper", fileweek);
 								}
 							}
 						}
 						else if(choicee==3) //goal by midfielder
 						{
+							observer = new UserUpdates(goal2);
+							observer = new FilesUpdate(goal2);
+							goal2.ApplyEvents(PlayerName, position, fileweek); 
 							System.out.println("what's the assist playerName?");
 							String assistName = input.next();
 							System.out.println("what's your player position?");
 							String positionasst = input.next();
-							assist.ApplyEvents(PlayerName, positionasst, gameweek);
+							assist.ApplyEvents(PlayerName, positionasst, fileweek);
 							System.out.println("what's the club Name");
 							String club = input.next();
-							goal2.ApplyEvents(PlayerName, position, gameweek); 
-							Events event = new GoalEvent();
 							if(gameweek.equalsIgnoreCase("week1")&&club.equalsIgnoreCase("LivelPool"))
 							{
 								for(int i=0 ; i<data.team2.size();i++)
 								{
-									event.ApplyEvents(data.team2.get(i), position, gameweek);
+									event.ApplyEvents(data.team2.get(i),"Defender", fileweek);
+								}
+								for(int i=0 ; i<data.team2.size();i++)
+								{
+									event.ApplyEvents(data.team2.get(i), "Goalkeeper", fileweek);
 								}
 							}
 							else if(gameweek.equalsIgnoreCase("week1")&&club.equalsIgnoreCase("ManCity"))
 							{
 								for(int i=0 ; i<data.team1.size();i++)
 								{
-									event.ApplyEvents(data.team1.get(i), position, gameweek);
+									event.ApplyEvents(data.team1.get(i),"Defender", fileweek);
+								}
+								for(int i=0 ; i<data.team1.size();i++)
+								{
+									event.ApplyEvents(data.team1.get(i), "Goalkeeper", fileweek);
 								}
 							}
 							else if(gameweek.equalsIgnoreCase("week2")&&club.equalsIgnoreCase("AstonVilla"))
 							{
 								for(int i=0 ; i<data.team2.size();i++)
 								{
-									event.ApplyEvents(data.team2.get(i), position, gameweek);
+									event.ApplyEvents(data.team2.get(i),"Defender", fileweek);
+								}
+								for(int i=0 ; i<data.team2.size();i++)
+								{
+									event.ApplyEvents(data.team2.get(i), "Goalkeeper", fileweek);
 								}
 							}
 							else if(gameweek.equalsIgnoreCase("week2")&&club.equalsIgnoreCase("Chelsea"))
 							{
 								for(int i=0 ; i<data.team1.size();i++)
 								{
-									event.ApplyEvents(data.team1.get(i), position, gameweek);
+									event.ApplyEvents(data.team1.get(i),"Defender", fileweek);
+								}
+								for(int i=0 ; i<data.team1.size();i++)
+								{
+									event.ApplyEvents(data.team1.get(i), "Goalkeeper", fileweek);
 								}
 							}
 						}
 						else if(choicee==4) //goal scored by a forward
 						{
+							observer = new UserUpdates(goal3);
+							observer = new FilesUpdate(goal3);
+							goal3.ApplyEvents(PlayerName, position, fileweek); 
 							System.out.println("what's the assist playerName?");
 							String assistName = input.next();
 							System.out.println("what's your player position?");
 							String positionasst = input.next();
-							assist.ApplyEvents(PlayerName, positionasst, gameweek);
+							assist.ApplyEvents(PlayerName, positionasst, fileweek);
 							System.out.println("what's the club Name");
 							String club = input.next();
-							goal3.ApplyEvents(PlayerName, position, gameweek); 
-							Events event = new GoalEvent();
 							if(gameweek.equalsIgnoreCase("week1")&&club.equalsIgnoreCase("LivelPool"))
 							{
 								for(int i=0 ; i<data.team2.size();i++)
 								{
-									event.ApplyEvents(data.team2.get(i), position, gameweek);
+									event.ApplyEvents(data.team2.get(i), position, fileweek);
 								}
 							}
 							else if(gameweek.equalsIgnoreCase("week1")&&club.equalsIgnoreCase("ManCity"))
 							{
 								for(int i=0 ; i<data.team1.size();i++)
 								{
-									event.ApplyEvents(data.team1.get(i), position, gameweek);
+									event.ApplyEvents(data.team1.get(i), position, fileweek);
 								}
 							}
 							else if(gameweek.equalsIgnoreCase("week2")&&club.equalsIgnoreCase("AstonVilla"))
 							{
 								for(int i=0 ; i<data.team2.size();i++)
 								{
-									event.ApplyEvents(data.team2.get(i), position, gameweek);
+									event.ApplyEvents(data.team2.get(i), position, fileweek);
 								}
 							}
 							else if(gameweek.equalsIgnoreCase("week2")&&club.equalsIgnoreCase("Chelsea"))
 							{
 								for(int i=0 ; i<data.team1.size();i++)
 								{
-									event.ApplyEvents(data.team1.get(i), position, gameweek);
+									event.ApplyEvents(data.team1.get(i), position, fileweek);
 								}
 							}
 						}
 						else if(choicee==5) //goal scored by a forward
 						{
-							yellowCard.ApplyEvents(PlayerName, position, gameweek);	
+							observer = new UserUpdates(yellowCard);
+							observer = new FilesUpdate(yellowCard);
+							yellowCard.ApplyEvents(PlayerName, position, fileweek);	
 						}
 						else if(choicee==6) //For each penalty save //5
 						{
-							redCard.ApplyEvents(PlayerName, position, gameweek);
+							observer = new UserUpdates(redCard);
+							observer = new FilesUpdate(redCard);
+							redCard.ApplyEvents(PlayerName, position, fileweek);
 						}
 						else if(choicee==7)//For each penalty miss //-2
 						{
-							assist.ApplyEvents(PlayerName, position, gameweek);
+							assist.ApplyEvents(PlayerName, position, fileweek);
 						}
 						else if(choicee==8) //8.For every 3 shot saves by a goalkeeper1
 						{
-							owngoal.ApplyEvents(PlayerName, position, gameweek);
+							observer = new UserUpdates(owngoal);
+							observer = new FilesUpdate(owngoal);
+							owngoal.ApplyEvents(PlayerName, position, fileweek);
 						} 
 						
 					  System.out.println("SUCCESSFULY....");
 				 }
 			 }
-			if(choice==6)
+			else if(choice==6)
 			 {  
 				Data data = new Data();
 				SquadCalculation squad= new SquadCalculation();
@@ -403,9 +461,10 @@ public class main
 				 System.out.println("the score of gameweek: ");
 			    }
 			 }
-			else
+			else 
 				break;
 			
-		}}
+		}
+		}
 	}
 

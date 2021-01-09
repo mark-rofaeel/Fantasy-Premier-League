@@ -20,8 +20,8 @@ public class Data
 	Path forward = FileSystems.getDefault().getPath("Forwards.txt");
 	Path week1 = FileSystems.getDefault().getPath("week1.txt");
 	Path week2 = FileSystems.getDefault().getPath("week2.txt");
-	ArrayList<String> team1 = new ArrayList<String>();
-	ArrayList<String> team2 = new ArrayList<String>();
+	public static ArrayList<String> team1 = new ArrayList<String>();
+	public static ArrayList<String> team2 = new ArrayList<String>();
 	public void fileWriter(File Playerfile,PlayerInfo info) throws IOException
 	{  
 		FileWriter fr = new FileWriter(Playerfile, true);
@@ -69,8 +69,12 @@ public class Data
         if(!isLoginSuccess)
         {
       	   System.out.println("the name of player not exists , enter again");
+      	 br.close();
+         out.close();
       	   return false;
         }
+        br.close();
+        out.close();
         return true ;
 	}
 	
@@ -95,6 +99,8 @@ public class Data
 
         pw.close();
         br.close();
+        out.close();
+        fr.close();
 		
 	}
 	 
@@ -108,40 +114,7 @@ public class Data
 	        }
             br.close();
     }
-	public void replacePoint(String PlayerName , int point , String filename) throws IOException
-    {
-		ArrayList<String> lines = new ArrayList<String>();
-		Path path = FileSystems.getDefault().getPath(filename);
-		File week1file = new File(path.toString());
-	    FileReader fr = new FileReader(week1file);
-	    BufferedReader br = new BufferedReader(fr);
-	    String line , PlayerPoint;
-	    lines.clear();
-	    while((line = br.readLine())!= null)
-	    { 
-	    	
-	    	if(line.contains(PlayerName))
-	    	{ 
-	    		PlayerPoint = line.split(" ")[3];
-	    		int oldPoint = Integer.parseInt(PlayerPoint); 
-	    		int newPoint = oldPoint + point;
-	    		String totalPoint = String.valueOf(newPoint);
-	    		line = line.replace(PlayerPoint, totalPoint);
-	    		lines.add(line);
-	    		continue ;
-	    	}
-	        lines.add(line);
-	    }
-	    PrintWriter writer = new PrintWriter(week1file);
-	    for (String str : lines) 
-	    {
-	        writer.println(str);
-	    }
-	    writer.close();
-	    br.close();
-	    fr.close();
-	   
-    }
+	
 	public void Gameweek(String gamefile) throws IOException
 	{
 		Path path = FileSystems.getDefault().getPath(gamefile+".txt");
@@ -189,14 +162,8 @@ public class Data
 	          
 	          br.close();
 	}
-	public void Update(String PlayerName , int point,String position,String gameweek) throws IOException
-	{ 
-		String fileweek = gameweek+".txt";
-		replacePoint(PlayerName,point,fileweek);
-		updateUserFile(PlayerName,point);
-		positionFiles(PlayerName,point,position);
-	}
-	public void updateUserFile(String PlayerName,int point) throws IOException
+	
+	/*public void updateUserFile(String PlayerName,int point) throws IOException
 	{
 		Path path = FileSystems.getDefault().getPath("users.txt");
 		File userfile = new File(path.toString());
@@ -211,26 +178,7 @@ public class Data
 		br.close();
 		fr.close();
 		
-	}
-	public void positionFiles(String PlayerName, int point,String position) throws IOException
-	{ 
-		if(position.equalsIgnoreCase("Defender"))
-		{
-			replacePoint(PlayerName,point,"Defenders.txt");
-		}
-		else if(position.equalsIgnoreCase("Goalkeeper"))
-		{
-			replacePoint(PlayerName,point,"Goalkeeprs.txt");
-		}
-		else if(position.equalsIgnoreCase("Forward"))
-		{
-			replacePoint(PlayerName,point,"Forwards.txt");
-		}
-		else if(position.equalsIgnoreCase("Midfielder"))
-		{
-			replacePoint(PlayerName,point,"Midfielders.txt");
-		}
-	}
+	}*/
 	public void ReadWeek(String gameweek) throws IOException
 	{
 		Path path = FileSystems.getDefault().getPath(gameweek+".txt");
@@ -267,6 +215,7 @@ public class Data
 		System.out.println("new budget : " + newLine);
 		br.close();
 		out.close();
+		fr.close();
     }
 	public void replaceBudget(String name,File filee ,String username) throws IOException  
 	{
@@ -290,7 +239,6 @@ public class Data
 		  String userline = buffer.readLine();
 		  String user = userline.split(" ")[0]; 
 		  String newBudget = null;
-		  System.out.println(budget + user);
 		  SquadCalculation squad = new SquadCalculation();
 		  newBudget=squad.CalcUserBudget(user,budget);
 		  System.out.println(newBudget);
@@ -306,6 +254,7 @@ public class Data
 		  
 		 
 		  buffer.close();
+		  read.close();
 		  br.close();
 		  out.close();
 	}
@@ -319,6 +268,7 @@ public class Data
        	myWriter.write("100.0");
        	myWriter.newLine();
        	myWriter.close();
+       	fr.close();
 	}
 	public void Dataweek(String username,int gameweek) throws IOException
 	  { 
@@ -355,6 +305,10 @@ public class Data
 				    } 
 			  }
 			  squadscore.CalcuScoring(points);
+			  bruser.close();
+			  brweek.close();
+			  fr.close();
+			  fr2.close();
 		}
 	public void ReadToGoalKeeprs() throws IOException 
 	{

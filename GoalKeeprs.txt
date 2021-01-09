@@ -1,13 +1,13 @@
-Alisson Liverpool Eur 16 6.16 goalkeeper
+Alisson Liverpool Eur 103 6.103 goalkeeper
 Rodak Fulham Eur 0 4.5 goalkeeper
-Ederson ManCity Eur 0 6.0 goalkeeper
+Ederson ManCity Eur -1 6.-1 goalkeeper
 Casilla Leeds Eur 0 4.5 goalkeeper
 Pope Burnley Eur 170 5.5 goalkeeper
 Meslier Leeds Eur 0 4.5 goalkeeper
 Schmeichel Leicester USA 156 5.5 goalkeeper 
 Ward Leicester USA 0 4.5 goalkeeper
 deGea ManUtd USA 143 5.5 goalkeeper
-Adrian Liverpool Eur 12 4.5 goalkeeper
+Adrian Liverpool Eur 71 4.5 goalkeeper
 Henderson ManUtd Eur 160 5.5 goalkeeper
 Bravo ManCity Eur 1 4.5 goalkeeper
 Lloris Spurs Eur 98 5.5 goalkeeper
